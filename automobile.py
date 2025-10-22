@@ -3,7 +3,7 @@ class Automobile:
         self.codice = codice
         self.marca = marca
         self.modello = modello
-        self.anno = anno
+        self.anno = int(anno)
         self.posti = int(posti)
         self.disponibile = disponibile
 

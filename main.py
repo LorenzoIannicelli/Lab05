@@ -41,33 +41,32 @@ def main(page: ft.Page):
     input_anno = ft.TextField(label="Anno")
 
     # Implementazione del counter numero posti
-
-    def aggiungi_posto():
-        currentValue = int(txtOut.value)
-        txtOut.value = str(currentValue + 1)
-        page.update()
-
-    def togli_posto():
-        currentValue = int(txtOut.value)
-        if currentValue > 0:
-            txtOut.value = str(currentValue - 1)
-            page.update()
-
     txtOut = ft.TextField(width=50,
                           disabled=True,
                           value='0',
                           border_color='green',
                           text_align=ft.TextAlign.CENTER)
 
+    def aggiungi_posto(e):
+        currentValue = int(txtOut.value)
+        txtOut.value = str(currentValue + 1)
+        page.update()
+
+    def togli_posto(e):
+        currentValue = int(txtOut.value)
+        if currentValue > 0:
+            txtOut.value = str(currentValue - 1)
+            page.update()
+
     btnMinus = ft.IconButton(icon=ft.Icons.REMOVE,
                              icon_color='red',
                              icon_size=15,
-                             on_click=togli_posto())
+                             on_click=togli_posto)
 
     btnAdd = ft.IconButton(icon=ft.Icons.ADD,
                            icon_color='green',
                            icon_size=15,
-                           on_click=aggiungi_posto())
+                           on_click=aggiungi_posto)
 
     # --- FUNZIONI APP ---
     def aggiorna_lista_auto():
@@ -90,7 +89,13 @@ def main(page: ft.Page):
 
     # Handlers per la gestione dei bottoni utili all'inserimento di una nuova auto
     def aggiungi_auto():
-        autonoleggio.aggiungi_automobile(input_marca.value, input_modello.value, input_anno.value, txtOut.value)
+        try :
+            if not input_anno.value.isdigit() or int(txtOut.value) == 0:
+                raise Exception
+            else :
+                autonoleggio.aggiungi_automobile(input_marca.value, input_modello.value, input_anno.value, txtOut.value)
+        except Exception:
+            alert.show_alert("❌ Errore: inserisci i valori numerici validi per anno e posti.")
 
     # --- EVENTI ---
     toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=cambia_tema)
