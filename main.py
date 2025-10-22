@@ -88,21 +88,29 @@ def main(page: ft.Page):
         page.update()
 
     # Handlers per la gestione dei bottoni utili all'inserimento di una nuova auto
-    def aggiungi_auto():
+    def aggiungi_auto(e):
         try :
             if not input_anno.value.isdigit() or int(txtOut.value) == 0:
                 raise Exception
             else :
                 autonoleggio.aggiungi_automobile(input_marca.value, input_modello.value, input_anno.value, txtOut.value)
+                aggiorna_lista_auto()
         except Exception:
             alert.show_alert("❌ Errore: inserisci i valori numerici validi per anno e posti.")
+        finally:
+            input_marca.value = ''
+            input_modello.value = ''
+            input_anno.value = ''
+            txtOut.value = '0'
+            page.update()
+
 
     # --- EVENTI ---
     toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=cambia_tema)
     pulsante_conferma_responsabile = ft.ElevatedButton("Conferma", on_click=conferma_responsabile)
 
     # Bottoni per la gestione dell'inserimento di una nuova auto
-    pulsante_nuova_auto = ft.ElevatedButton('Aggiungi automobile', on_click=aggiungi_auto())
+    pulsante_nuova_auto = ft.ElevatedButton('Aggiungi automobile', on_click=aggiungi_auto)
 
     # --- LAYOUT ---
     page.add(
