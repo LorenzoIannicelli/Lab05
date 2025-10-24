@@ -90,13 +90,15 @@ def main(page: ft.Page):
     # Handlers per la gestione dei bottoni utili all'inserimento di una nuova auto
     def aggiungi_auto(e):
         try :
-            if not input_anno.value.isdigit() or int(txtOut.value) == 0:
-                raise Exception
+            if not input_marca.value or not input_modello.value:
+                raise Exception('inserisci i valori validi per marca e modello')
+            elif not input_anno.value.isdigit() or int(txtOut.value) == 0:
+                raise Exception('inserisci i valori numerici validi per anno e posti')
             else :
                 autonoleggio.aggiungi_automobile(input_marca.value, input_modello.value, input_anno.value, txtOut.value)
                 aggiorna_lista_auto()
-        except Exception:
-            alert.show_alert("❌ Errore: inserisci i valori numerici validi per anno e posti.")
+        except Exception as e:
+            alert.show_alert(f"❌ Errore: {e}.")
         finally:
             input_marca.value = ''
             input_modello.value = ''
@@ -110,7 +112,8 @@ def main(page: ft.Page):
     pulsante_conferma_responsabile = ft.ElevatedButton("Conferma", on_click=conferma_responsabile)
 
     # Bottoni per la gestione dell'inserimento di una nuova auto
-    pulsante_nuova_auto = ft.ElevatedButton('Aggiungi automobile', on_click=aggiungi_auto)
+    pulsante_nuova_auto = ft.ElevatedButton('Aggiungi automobile',
+                                            on_click=aggiungi_auto)
 
     # --- LAYOUT ---
     page.add(
